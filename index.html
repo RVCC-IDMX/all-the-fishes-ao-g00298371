@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+</head>
+
+
+<body>
+
+    <Script>
+
+        //The App
+        const app = new PIXI.Application({
+            width:640,
+            height:480,
+            backgroundColor: 0x000000
+        });
+
+        //Add view to document
+        document.body.appendChild(app.view);
+
+        //Add our first sprite
+        let fish1 = PIXI.Sprite.from("img/goldfish.png");
+            fish1.anchor.set();
+            fish1.scale.set(.5);
+            fish1.x = 120;
+            fish1.y = 120;
+            fish1.tint = 0xFF7777
+
+
+        app.stage.addChild(fish1);
+
+        
+
+    </Script>
+
+</body>
+
+
+</html>
