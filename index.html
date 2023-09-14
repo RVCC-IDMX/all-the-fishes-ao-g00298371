@@ -24,6 +24,23 @@
 
         //Sprites
 
+        //Treasure
+
+        let treasure = PIXI.Sprite.from("img/treasurechest.png");
+            treasure.scale.set(.3);
+            treasure.anchor.set(.5,1);
+            treasure.tint = 0x99FF99
+
+
+
+        let treasure_container = new PIXI.Container();
+            treasure_container.addChild(treasure);
+            treasure_container.x = 375;
+            treasure_container.y = 500;
+
+        app.stage.addChild(treasure_container);
+
+
         //Seaweed
         let seaweed = PIXI.Sprite.from("img/seaweed.png");
             seaweed.scale.set(.1);
