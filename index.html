@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,8 +15,8 @@
 
         //The App
         const app = new PIXI.Application({
-            width:640,
-            height:480,
+            width: 640,
+            height: 480,
             backgroundColor: 0x207F7F
         });
 
@@ -26,16 +27,16 @@
 
         //Treasure
         let treasure = PIXI.Sprite.from("img/treasurechest.png");
-            treasure.scale.set(.3);
-            treasure.anchor.set(.5,1);
-            treasure.tint = 0x99FF99
+        treasure.scale.set(.3);
+        treasure.anchor.set(.5, 1);
+        treasure.tint = 0x99FF99
 
 
 
         let treasure_container = new PIXI.Container();
-            treasure_container.addChild(treasure);
-            treasure_container.x = 375;
-            treasure_container.y = 500;
+        treasure_container.addChild(treasure);
+        treasure_container.x = 375;
+        treasure_container.y = 500;
 
         app.stage.addChild(treasure_container);
 
@@ -43,32 +44,32 @@
 
         //Seaweed
         let seaweed = PIXI.Sprite.from("img/seaweed.png");
-            seaweed.scale.set(.1);
-            seaweed.anchor.set(.25,1);
-            seaweed.tint = 0x99FF99
+        seaweed.scale.set(.1);
+        seaweed.anchor.set(.25, 1);
+        seaweed.tint = 0x99FF99
 
 
 
         let seaweed_container = new PIXI.Container();
-            seaweed_container.addChild(seaweed);
-            seaweed_container.x = 500;
-            seaweed_container.y = 480;
+        seaweed_container.addChild(seaweed);
+        seaweed_container.x = 500;
+        seaweed_container.y = 480;
 
         app.stage.addChild(seaweed_container);
-        
+
 
 
         let seaweed2 = PIXI.Sprite.from("img/seaweed2.png");
-            seaweed2.scale.set(.15);
-            seaweed2.scale.x *= -1;
-            seaweed2.anchor.set(.25,1);
-            seaweed2.tint = 0x99FF99
+        seaweed2.scale.set(.15);
+        seaweed2.scale.x *= -1;
+        seaweed2.anchor.set(.25, 1);
+        seaweed2.tint = 0x99FF99
 
 
         let seaweed2_container = new PIXI.Container();
-            seaweed2_container.addChild(seaweed2);
-            seaweed2_container.x = 250;
-            seaweed2_container.y = 480;
+        seaweed2_container.addChild(seaweed2);
+        seaweed2_container.x = 250;
+        seaweed2_container.y = 480;
 
         app.stage.addChild(seaweed2_container);
 
@@ -78,87 +79,87 @@
 
         //Fishes
         let fish1 = PIXI.Sprite.from("img/goldfish.png");
-            fish1.anchor.set(0);
-            fish1.scale.set(.25);
-            fish1.x = 0;
-            fish1.y = 0;
-            fish1.tint = 0xFF7777;
-        
-        let fish1_container = new PIXI.Container();
-            fish1_container.addChild(fish1);
+        fish1.anchor.set(0);
+        fish1.scale.set(.25);
+        fish1.x = 0;
+        fish1.y = 0;
+        fish1.tint = 0xFF7777;
 
-            app.stage.addChild(fish1_container);
+        let fish1_container = new PIXI.Container();
+        fish1_container.addChild(fish1);
+
+        app.stage.addChild(fish1_container);
 
 
 
         let fish2 = PIXI.Sprite.from("img/goldfish2.png");
-            fish2.anchor.set(-0.7);
-            fish2.scale.set(.25);
-            fish2.x = 400;
-            fish2.y = 180;
-            fish2.tint = 0xF0FF0F;
+        fish2.anchor.set(-0.7);
+        fish2.scale.set(.25);
+        fish2.x = 400;
+        fish2.y = 180;
+        fish2.tint = 0xF0FF0F;
 
         let fish2_container = new PIXI.Container();
-            fish2_container.addChild(fish2);
+        fish2_container.addChild(fish2);
 
-            app.stage.addChild(fish2_container);
+        app.stage.addChild(fish2_container);
 
 
         let fish3 = PIXI.Sprite.from("img/goldfish3.png");
-            fish3.anchor.set(0);
-            fish3.scale.set(.25);
-            fish3.x = 0;
-            fish3.y = 0;
-            fish3.tint = 0xFF7777;
-        
-        let fish3_container = new PIXI.Container();
-            fish3_container.addChild(fish3);
+        fish3.anchor.set(0);
+        fish3.scale.set(.25);
+        fish3.x = 0;
+        fish3.y = 0;
+        fish3.tint = 0xB0000B;
 
-            app.stage.addChild(fish3_container);
+        let fish3_container = new PIXI.Container();
+        fish3_container.addChild(fish3);
+
+        app.stage.addChild(fish3_container);
 
 
         let fish4 = PIXI.Sprite.from("img/goldfish4.png");
-            fish4.anchor.set(0);
-            fish4.scale.set(.25);
-            fish4.x = 0;
-            fish4.y = 0;
-            fish4.tint = 0xFF7777;
-        
-        let fish4_container = new PIXI.Container();
-            fish4_container.addChild(fish4);
+        fish4.anchor.set(0);
+        fish4.scale.set(.25);
+        fish4.x = 0;
+        fish4.y = 0;
+        fish4.tint = 0xB0000B;
 
-            app.stage.addChild(fish4_container);
+        let fish4_container = new PIXI.Container();
+        fish4_container.addChild(fish4);
+
+        app.stage.addChild(fish4_container);
 
 
         let fish5 = PIXI.Sprite.from("img/goldfish5.png");
-            fish5.anchor.set(0);
-            fish5.scale.set(.25);
-            fish5.x = 0;
-            fish5.y = 0;
-            fish5.tint = 0xFF7777;
-        
-        let fish5_container = new PIXI.Container();
-            fish5_container.addChild(fish5);
+        fish5.anchor.set(0);
+        fish5.scale.set(.25);
+        fish5.x = 0;
+        fish5.y = 0;
+        fish5.tint = 0xF0FF0F;
 
-            app.stage.addChild(fish5_container);
+        let fish5_container = new PIXI.Container();
+        fish5_container.addChild(fish5);
+
+        app.stage.addChild(fish5_container);
 
 
 
         //Glass
         let glasspane = PIXI.Sprite.from("img/glasspane.png");
-            glasspane.tint = 0x99FF99
+        glasspane.tint = 0x99FF99
 
         let glasspane_container = new PIXI.Container();
-            glasspane_container.addChild(glasspane);
+        glasspane_container.addChild(glasspane);
 
-            app.stage.addChild(glasspane_container);
+        app.stage.addChild(glasspane_container);
 
         //Create new container 
         //let my_container = new PIXI.Container();
         //    my_container.addChild(fish1);
         //    my_container.addChild(fish2);
-        
-        
+
+
         //Add container to stage
         //app.stage.addChild(my_container);
 
@@ -174,54 +175,54 @@
 
 
             //Fish 1 bobbing
-            fish1.y = 100 + (Math.sin(counter/20)) * 50;
+            fish1.y = 100 + (Math.sin(counter / 40)) * 30;
             //Fish 1 wobbling
-            fish1.scale.x = 0.25 + Math.sin(counter/2)/400;
+            fish1.scale.x = 0.25 + Math.sin(counter / 2) / 400;
             //Fish 1 container moving back and forth
-            fish1_container.x = 320 + Math.sin(counter/100) * 100;
+            fish1_container.x = 320 + Math.sin(counter / 100) * 100;
 
 
             //Fish 2 bobbing
-            fish2.y = 150 + (Math.sin(counter/30)) * 30;
+            fish2.y = 150 + (Math.sin(counter / 30)) * 30;
             //Fish 2 wobbling
-            fish2.scale.x = -0.25 + Math.sin(counter/2)/400;
+            fish2.scale.x = -0.25 + Math.sin(counter / 2) / 400;
             //Fish 2 container moving back and forth
-            fish2_container.x = 100 + Math.sin(counter/100) * 50;
+            fish2_container.x = 200 + Math.sin(counter / 100) * 50;
 
 
             //Fish 3 bobbing
-            fish3.y = 100 + (Math.sin(counter/20)) * 50;
+            fish3.y = 100 + (Math.sin(counter / 60)) * 60;
             //Fish 3 wobbling
-            fish3.scale.x = 0.25 + Math.sin(counter/2)/400;
+            fish3.scale.x = -0.25 + Math.sin(counter / 2) / 400;
             //Fish 3 container moving back and forth
-            fish3_container.x = 320 + Math.sin(counter/100) * 100;
+            fish3_container.x = 320 + Math.sin(counter / 100) * 100;
 
 
             //Fish 4 bobbing
-            fish4.y = 150 + (Math.sin(counter/30)) * 30;
+            fish4.y = 150 + (Math.sin(counter / 70)) * 30;
             //Fish 4 wobbling
-            fish4.scale.x = -0.25 + Math.sin(counter/2)/400;
+            fish4.scale.x = 0.25 + Math.sin(counter / 2) / 400;
             //Fish 4 container moving back and forth
-            fish4_container.x = 100 + Math.sin(counter/100) * 50;
+            fish4_container.x = 400 + Math.sin(counter / 100) * 50;
 
 
             //Fish 5 bobbing
-            fish5.y = 150 + (Math.sin(counter/30)) * 30;
+            fish5.y = 150 + (Math.sin(counter / 30)) * 30;
             //Fish 5 wobbling
-            fish5.scale.x = -0.25 + Math.sin(counter/2)/400;
+            fish5.scale.x = -0.25 + Math.sin(counter / 5) / 300;
             //Fish 5 container moving back and forth
-            fish5_container.x = 100 + Math.sin(counter/100) * 50;
+            fish5_container.x = 300 + Math.sin(counter / 100) * 50;
 
 
             //Seaweed Waving
-            seaweed.scale.x = 0.1 + Math.sin(counter/40)/100;
-            seaweed.scale.y = 0.1 + Math.sin(counter/60)/60;
-            seaweed.angle = Math.sin(counter/60)*5;
+            seaweed.scale.x = 0.1 + Math.sin(counter / 40) / 100;
+            seaweed.scale.y = 0.1 + Math.sin(counter / 60) / 60;
+            seaweed.angle = Math.sin(counter / 60) * 5;
 
             //Seaweed Waving 2
-            seaweed2.scale.x = -0.15 + Math.sin(counter/40)/100;
-            seaweed2.scale.y =  0.15 + Math.sin(counter/60)/60;
-            seaweed2.angle = Math.sin(counter/60)*5;
+            seaweed2.scale.x = -0.15 + Math.sin(counter / 40) / 100;
+            seaweed2.scale.y = 0.15 + Math.sin(counter / 60) / 60;
+            seaweed2.angle = Math.sin(counter / 60) * 5;
 
 
 
@@ -229,7 +230,7 @@
             requestAnimationFrame(loop);
         }
         loop();
-        
+
 
     </Script>
 
