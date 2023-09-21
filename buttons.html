@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Stuff</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+</head>
+
+<body>
+
+<script>
+
+//The App
+const app = new PIXI.Application({
+    width: 640,
+    height: 480,
+    backgroundColor: 0x000000
+});
+
+//Add View to Document
+
+document.body.appendChild(app.view);
+
+//Our Button Class
+class Button extends PIXI.Container {
+
+    //Constructor
+    constructor(label,w,h){
+        super();
+
+        if (label === undefined)
+            this.label = "Button";
+        else
+            this .label = label;
+        
+        if (w === undefined)
+            this.w = 200
+        
+        else  
+            this.w = w;
+
+        if (h === undefined)
+            this.h = 50;
+
+        else
+            this.h = h;
+
+        //Make interactive
+        this.interactive = true;
+
+        //Button Body
+        let buttonBody = new PIXI.Graphics();
+            buttonBody.beginFill(0xCCCCCC);
+            buttonBody.drawRect(0,0,
+                            this.w,this.h);
+            buttonBody.endFill();
+            this.buttonBody = buttonBody;
+
+        this.addChild(buttonBody);
+
+        //Button Label
+        let buttonLabel = new PIXI.Text(this.label);
+            buttonLabel.anchor.set(0.5);
+            buttonLabel.x = buttonBody.width/2;
+            buttonLabel.y = buttonBody.height/2;
+            this.buttonLabel = buttonLabel;
+
+        this.addChild(buttonLabel);
+
+
+
+
+        //Event Listeners
+        //Click Listeners
+        this.on("pointertap", (e) => {
+            console.log(e);
+            let color = Math.random() *0xFFFFFF;
+            //buttonBody.tint = color;
+        });
+
+        //Hover Events
+        this.on("pointerover", (e)=> {
+            buttonBody.alpha = 0.7;
+        });
+
+        this.on("pointerout", (e)=> {
+            buttonBody.alpha = 1;
+        });
+
+        //Draggable Event Listeners
+        this.draggable = false;     //Whether it can drag
+        this.dragging = false;      //If Dragging
+        this.offsetX;
+        this.offsetY;
+
+        this.on("pointerdown", (e)=> {
+            if (!this.draggable) return;
+            this.dragging = true;
+            this.offsetX = this.x - e.global.x;
+            this.offsetY = this.y - e.global.y;
+
+        });
+
+        this.on("pointermove", (e)=> {
+            if (!this.draggable) return;
+            console.log(e.global.x,e.global.y);
+            if (this.dragging){
+                this.x = e.global.x + this.offsetX;
+                this.y = e.global.y + this.offsetY;
+            }
+        });
+
+        this.on("pointerup", (e)=> {
+            if (!this.draggable) return;
+            this.dragging = false;
+        });
+
+        this.on("pointerupoutside", (e)=> {
+            if (!this.draggable) return;
+            this.dragging = false;
+        });
+
+        
+    }
+
+}
+
+//Toggle Class
+class Toggle extends Button {
+
+    //constructor
+    constructor(label,w,h) {
+        super(label,w,h);
+
+        //Extra Variables
+        this.value = false;
+
+        //Event Listeners
+        //Click Listeners
+        this.on("pointertap", (e)=>{
+            this.value = !this.value;
+            console.log(this.value);
+            
+            if (this.value == true)
+                this.buttonBody.tint = 0x00CC00;
+            else
+                this.buttonBody.tint = 0xCCC000;
+        });
+
+    }
+}
+
+
+//Slider
+class Slider extends PIXI.Container {
+
+    constructor() {
+        super();
+
+        this.interactive = true;
+
+        //Extra Variables
+        this.dragging = false;
+        this.value = 0;
+
+        //The Track
+        let track = new PIXI.Graphics();
+            track.beginFill(0xEEEEEE);
+            track.drawRect(0, -10,300,20);
+            track.endFill();
+
+            this.addChild(track);
+
+        //The Slide
+        let slide = new PIXI.Graphics();
+            slide.beginFill(0xCCCCCC);
+            slide.drawRect(-25,-25,50,50);
+            slide.endFill();
+
+            this.addChild(slide);
+
+        //Events
+        this.on("pointerdown", (e)=> {
+            this.dragging = true;
+
+        });
+            
+        this.on("pointermove", (e)=> {
+            if (this.dragging) {
+                //Move the slider
+                slide.x = e.global.x - this.getGlobalPosition().x;
+                //Check constraints
+                if (slide.x > track.width) slide.x = track.width;
+                if (slide.x < 0) slide.x = 0;
+                //Check value
+                this.value = slide.x / track.width;
+                slide.tint = this.value * 0xFFFFFF;
+
+            }
+        });
+
+        this.on("pointerup", (e)=> {
+            this.dragging = false;
+        });    
+
+        this.on("pointerupoutside", (e)=> {
+            this.dragging = false;
+        });    
+
+    }
+
+}
+
+
+
+//Make a Slider
+let mySlider = new Slider();
+    mySlider.x = 100;
+    mySlider.y = 200;
+
+app.stage.addChild(mySlider);
+
+//Make a Button
+let myButton = new Button("Name",200,50);
+    myButton.draggable =  true;
+
+//Add to Stage
+app.stage.addChild(myButton);
+
+//Make Toggle
+let myToggle = new Toggle ("Hello", 200,50);
+    myToggle.x = 300;
+
+//Add to Stage
+app.stage.addChild(myToggle);
+
+
+
+</script>    
+
+</body>
+
+</html>
