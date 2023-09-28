@@ -74,9 +74,6 @@
         app.stage.addChild(seaweed2_container);
 
 
-
-
-
         //Fishes
         let fish1 = PIXI.Sprite.from("img/goldfish.png");
         fish1.anchor.set(0);
@@ -154,16 +151,80 @@
 
         app.stage.addChild(glasspane_container);
 
-        //Create new container 
-        //let my_container = new PIXI.Container();
-        //    my_container.addChild(fish1);
-        //    my_container.addChild(fish2);
-
-
-        //Add container to stage
-        //app.stage.addChild(my_container);
-
         let counter = 0;
+
+
+        //Slider
+
+        class Slider extends PIXI.Container {
+
+        constructor() {
+            super();
+
+            this.interactive = true;
+
+            //Extra Variables
+            this.dragging = false;
+            this.value = 0;
+
+            //The Track
+            let track = new PIXI.Graphics();
+                track.beginFill(0xEEEEEE);
+                track.drawRoundedRect(0, -10,300,20);
+                track.endFill();
+                track.tint = 0x202643;
+
+                this.addChild(track);
+
+            //The Slide
+            let slide = new PIXI.Graphics();
+                slide.beginFill(0xCCCCCC);
+                slide.drawCircle(0,0,25);
+                slide.endFill();
+                slide.tint = 0xb7410e;
+                
+
+                this.addChild(slide);
+
+            //Events
+            this.on("pointerdown", (e)=> {
+                this.dragging = true;
+
+            });
+                
+            this.on("pointermove", (e)=> {
+                if (this.dragging) {
+                    //Move the slider
+                    slide.x = e.global.x - this.getGlobalPosition().x;
+                    //Check constraints
+                    if (slide.x > track.width) slide.x = track.width;
+                    if (slide.x < 0) slide.x = 0;
+                    //Check value
+                    this.value = slide.x / track.width;
+                    
+
+                }
+            });
+
+            this.on("pointerup", (e)=> {
+                this.dragging = false;
+            });    
+
+            this.on("pointerupoutside", (e)=> {
+                this.dragging = false;
+            });    
+
+        }
+
+        }
+
+    //Make a Slider
+    let mySlider = new Slider();
+        mySlider.x = 40;
+        mySlider.y = 40;
+
+    app.stage.addChild(mySlider);
+
 
 
 
