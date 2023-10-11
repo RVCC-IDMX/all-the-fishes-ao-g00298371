@@ -14,7 +14,7 @@
 
     <script>
 
-        //#1 – SPRITES:
+    //#1 – SPRITES:
         //The App
         const app = new PIXI.Application({
             width: 640,
@@ -168,7 +168,7 @@
 
 
 
-        //#2 – SLIDER:
+    //#2 – SLIDER:
         //Slider
 
         class Slider extends PIXI.Container {
@@ -253,7 +253,7 @@
 
 
 
-        //#3 – BUTTON:
+    //#3 – BUTTON:
 
         //Our Button Class
         class Button extends PIXI.Container {
@@ -327,17 +327,21 @@
 
 
 
-        //#4 DRAGGABILITY
+    //#4 DRAGGABILITY
 
 
 
 
-        //#5 – ANIMATIONS:
+    //#5 – ANIMATIONS:
 
         //Animation loop!
         function loop() {
 
             counter++;
+
+            //Shark wobbling
+            shark.scale.x = 0.2 + Math.sin(counter / 4) / 300;
+
 
             //Fish 1 bobbing
             fish1.y = 100 + (Math.sin(counter / 40)) * 30;
@@ -502,6 +506,7 @@
 
 
                 await Animate.to(shark_container, {
+                    scaleX: -1,
                     duration: 500
                 })
                 await Animate.to(shark_container, {
@@ -511,7 +516,7 @@
                     easing: Animate.easeInOut
                 });
                 await Animate.to(shark_container, {
-                    scaleX: -1,
+                    scaleX: 1,
                     duration: 500
                 })
                 await Animate.to(shark_container, {
@@ -530,8 +535,6 @@
             }
 
             window.addEventListener("load", go);
-
-
 
 
             requestAnimationFrame(loop);
