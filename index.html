@@ -75,7 +75,7 @@
         //Fishes
 
         let shark = PIXI.Sprite.from("img/shark.png");
-        shark.anchor.set(0);
+        shark.anchor.set(0.5);
         shark.scale.set(.2);
         shark.x = 0;
         shark.y = 0;
@@ -89,7 +89,7 @@
 
 
         let fish1 = PIXI.Sprite.from("img/goldfish.png");
-        fish1.anchor.set(0);
+        fish1.anchor.set(.5);
         fish1.scale.set(.25);
         fish1.x = 0;
         fish1.y = 0;
@@ -327,12 +327,8 @@
 
 
 
-    //#4 DRAGGABILITY
 
-
-
-
-    //#5 – ANIMATIONS:
+    //#4 – ANIMATIONS:
 
         //Animation loop!
         function loop() {
@@ -341,15 +337,6 @@
 
             //Shark wobbling
             shark.scale.x = 0.2 + Math.sin(counter / 4) / 300;
-
-
-            //Fish 1 bobbing
-            fish1.y = 100 + (Math.sin(counter / 40)) * 30;
-            //Fish 1 wobbling
-            fish1.scale.x = 0.25 + Math.sin(counter / 2) / 400;
-            //Fish 1 container moving back and forth
-            fish1_container.x = 320 + Math.sin(counter / 100) * 100;
-
 
             //Fish 2 bobbing
             fish2.y = 150 + (Math.sin(counter / 30)) * 30;
@@ -393,153 +380,211 @@
             seaweed2.scale.y = 0.15 + Math.sin(counter / 60) / 60;
             seaweed2.angle = Math.sin(counter / 60) * 5;
 
+            requestAnimationFrame(loop);
+
+        } loop();
 
 
-            //Shark Animation
 
-            let Animate = {};
+        //"Await" Animations
 
-            //Move to function
-            Animate.to = function (obj, end) {
+        let Animate = {};
 
-                //Make a promise
-                return new Promise((resolve, reject) => {
+        //Move to function
+        Animate.to = function (obj, end) {
 
-                    //Initial state parameters
-                    var start = {
-                        x: obj.x,
-                        y: obj.y,
-                        scaleX: obj.scale.x,
-                        scaleY: obj.scale.y
-                    };
+            //Make a promise
+            return new Promise((resolve, reject) => {
 
-                    //Set defaults
-                    if (end.duration == undefined) end.duration = 0;
-                    if (end.easing == undefined) end.easing = Animate.linear;
+                //Initial state parameters
+                var start = {
+                    x: obj.x,
+                    y: obj.y,
+                    scaleX: obj.scale.x,
+                    scaleY: obj.scale.y
+                };
 
-                    //We need to know when we start
-                    var startTime = Date.now();
+                //Set defaults
+                if (end.duration == undefined) end.duration = 0;
+                if (end.easing == undefined) end.easing = Animate.linear;
 
-                    //This is this object's personal animation loop
-                    function loop() {
+                //We need to know when we start
+                var startTime = Date.now();
 
-                        //Calculate our delta
-                        let ticker = Date.now() - startTime;
-                        let delta = ticker / end.duration;
-                        let ease = end.easing(delta);
+                //This is this object's personal animation loop
+                function loop() {
 
-                        if (delta >= 1 || end.duration === 0) {
-                            if (end.x != undefined)
-                                obj.x = end.x;
-                            if (end.y != undefined)
-                                obj.y = end.y;
-                            if (end.scaleX != undefined)
-                                obj.scale.x = end.scaleX
-                            if (end.scaleY != undefined)
-                                obj.scaleY = end.scaleY;
-                            console.log("Done");
-                            resolve();
-                            return;
+                    //Calculate our delta
+                    let ticker = Date.now() - startTime;
+                    let delta = ticker / end.duration;
+                    let ease = end.easing(delta);
 
-                        }
-
-                        //Interpolation Function
-                        let lerp = (a, b, n) => {
-                            return (1 - n) * a + n * b;
-                        };
-
-                        //Lerp our coordinates
+                    if (delta >= 1 || end.duration === 0) {
                         if (end.x != undefined)
-                            obj.x = lerp(start.x, end.x, ease);
+                            obj.x = end.x;
                         if (end.y != undefined)
-                            obj.y = lerp(start.y, end.y, ease);
-                        //Lerp scale
+                            obj.y = end.y;
                         if (end.scaleX != undefined)
-                            obj.scale.x = lerp(start.scaleX, end.scaleX, ease);
+                            obj.scale.x = end.scaleX
                         if (end.scaleY != undefined)
-                            obj.scale.y = lerp(start.scaleY, end.scaleY, ease);
+                            obj.scaleY = end.scaleY;
+                        console.log("Done");
+                        resolve();
+                        return;
 
-                        //Loop
-                        obj.animationID = requestAnimationFrame(loop);
                     }
 
-                    //Clear all prior animations
-                    cancelAnimationFrame(obj.animationID);
+                    //Interpolation Function
+                    let lerp = (a, b, n) => {
+                        return (1 - n) * a + n * b;
+                    };
 
-                    loop();
+                    //Lerp our coordinates
+                    if (end.x != undefined)
+                        obj.x = lerp(start.x, end.x, ease);
+                    if (end.y != undefined)
+                        obj.y = lerp(start.y, end.y, ease);
+                    //Lerp scale
+                    if (end.scaleX != undefined)
+                        obj.scale.x = lerp(start.scaleX, end.scaleX, ease);
+                    if (end.scaleY != undefined)
+                        obj.scale.y = lerp(start.scaleY, end.scaleY, ease);
 
-                });
+                    //Loop
+                    obj.animationID = requestAnimationFrame(loop);
+                }
 
-            }
-
-            //Stop
-            Animate.stop = function (obj) {
+                //Clear all prior animations
                 cancelAnimationFrame(obj.animationID);
-            }
 
-            //
-            Animate.linear = (x) => x;
+                loop();
 
-            //Quadratic
-            Animate.easeIn = (x) => x * x;
-            Animate.easeOut = (x) => 1 - (1 - x) * (1 - x);
-            Animate.easeInOut = (x) => {
-                if (x < 0.5) return 2 * x * x;
-                return 1 - Math.pow(-2 * x + 2, 2) / 2;
-            }
+            });
 
-            //Pause
-            function pause(ms) {
-                return new Promise((resolve, reject) => {
-
-                    setTimeout(resolve, ms);
-
-                });
-            }
-
-            //Test
-            let bob = PIXI.Sprite.from('./img/shark.png')
-            bob.scale.set(.2);
-            bob.anchor.set(0.5);
-
-            async function go() {
-
-
-                await Animate.to(shark_container, {
-                    scaleX: -1,
-                    duration: 500
-                })
-                await Animate.to(shark_container, {
-                    x: 400,
-                    y: 50,
-                    duration: 2000,
-                    easing: Animate.easeInOut
-                });
-                await Animate.to(shark_container, {
-                    scaleX: 1,
-                    duration: 500
-                })
-                await Animate.to(shark_container, {
-                    x: 350,
-                    y: 350,
-                    duration: 2000,
-                    easing: Animate.easeInOut
-                });
-                await Animate.to(shark_container, {
-                    x: 50,
-                    y: 0,
-                    duration: 2000,
-                    easing: Animate.easeInOut
-                });
-                go();
-            }
-
-            window.addEventListener("load", go);
-
-
-            requestAnimationFrame(loop);
         }
-        loop();
+
+        //Stop
+        Animate.stop = function (obj) {
+            cancelAnimationFrame(obj.animationID);
+        }
+
+        //
+        Animate.linear = (x) => x;
+
+        //Quadratic
+        Animate.easeIn = (x) => x * x;
+        Animate.easeOut = (x) => 1 - (1 - x) * (1 - x);
+        Animate.easeInOut = (x) => {
+            if (x < 0.5) return 2 * x * x;
+            return 1 - Math.pow(-2 * x + 2, 2) / 2;
+        }
+
+
+
+        //Fish 1's idle animation
+        async function fish1bob() {
+            await Animate.to(fish1, {
+                x:0, y: -20, duration:1000, easing:Animate.easeInOut
+            });
+            await Animate.to(fish1, {
+                x:0, y:20, duration:1000, easing:Animate.easeInOut
+            });
+            fish1bob();
+        }
+
+        async function fish1Idle() {
+            fish1bob();
+            //Move to idle location
+            await Animate.to(fish1_container,{
+                x:350,y:100, duration:2000, easing:Animate.easeInOut
+            });
+            Animate.to(fish1_container, {
+                scaleX : 1,
+                duration:500,
+                easing:Animate.easeInOut
+            });
+        }
+
+        //Fish 1's Click Mechanic
+        window.addEventListener("load", fish1Idle);
+        async function fish1MoveToTap(e) {
+
+            console.log(e.global);
+
+            await Animate.to(fish1_container,{
+                x:e.global.x, 
+                y:e.global.y, 
+                duration:3000, 
+                easing : Animate.easeInOut
+            });
+            await pause(500);
+            if (e.global.x > 200) {
+                await Animate.to(fish1_container,{
+                    scaleX : -1,
+                    duration:500, 
+                    easing : Animate.easeInOut
+                });
+            }
+
+            fish1Idle();
+
+        }
+
+        app.stage.eventMode = 'static';
+        app.stage.hitArea = app.screen;
+        app.stage.on("pointerdown", fish1MoveToTap);
+
+
+
+
+        //Pause
+        function pause(ms) {
+            return new Promise((resolve, reject) => {
+
+                setTimeout(resolve, ms);
+
+            });
+        }
+
+        //Test
+        let bob = PIXI.Sprite.from('./img/shark.png')
+        bob.scale.set(.2);
+        bob.anchor.set(0.5);
+
+        async function go() {
+
+
+            await Animate.to(shark_container, {
+                scaleX: -1,
+                duration: 500
+            })
+            await Animate.to(shark_container, {
+                x: 400,
+                y: 50,
+                duration: 2000,
+                easing: Animate.easeInOut
+            });
+            await Animate.to(shark_container, {
+                scaleX: 1,
+                duration: 500
+            })
+            await Animate.to(shark_container, {
+                x: 350,
+                y: 350,
+                duration: 2000,
+                easing: Animate.easeInOut
+            });
+            await Animate.to(shark_container, {
+                x: 50,
+                y: 0,
+                duration: 2000,
+                easing: Animate.easeInOut
+            });
+            go();
+        }
+
+        window.addEventListener("load", go);
+
 
 
     </script>
