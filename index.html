@@ -338,6 +338,7 @@
             //Shark wobbling
             shark.scale.x = 0.2 + Math.sin(counter / 4) / 300;
 
+            /*
             //Fish 2 bobbing
             fish2.y = 150 + (Math.sin(counter / 30)) * 30;
             //Fish 2 wobbling
@@ -367,7 +368,7 @@
             //Fish 5 wobbling
             fish5.scale.x = -0.25 + Math.sin(counter / 5) / 300;
             //Fish 5 container moving back and forth
-            fish5_container.x = 300 + Math.sin(counter / 100) * 50;
+            fish5_container.x = 300 + Math.sin(counter / 100) * 50; */
 
 
             //Seaweed Waving
@@ -536,6 +537,225 @@
 
 
 
+        //Fish 2's idle animation
+        async function fish2joe() {
+            await Animate.to(fish2, {
+                x:0, y: -20, duration:1000, easing:Animate.easeInOut
+            });
+            await Animate.to(fish2, {
+                x:0, y:20, duration:1000, easing:Animate.easeInOut
+            });
+            fish2joe();
+        }
+
+        async function fish2Idle() {
+            fish2joe();
+            //Move to idle location
+            await Animate.to(fish2_container,{
+                x:350,y:100, duration:2000, easing:Animate.easeInOut
+            });
+            Animate.to(fish2_container, {
+                scaleX : 1,
+                duration:500,
+                easing:Animate.easeInOut
+            });
+        }
+
+        //Fish 2's Click Mechanic
+        window.addEventListener("load", fish2Idle);
+        async function fish2MoveToTap(e) {
+
+            console.log(e.global);
+
+            await Animate.to(fish2_container,{
+                x:e.global.x, 
+                y:e.global.y, 
+                duration:3000, 
+                easing : Animate.easeInOut
+            });
+            await pause(500);
+            if (e.global.x > 200) {
+                await Animate.to(fish2_container,{
+                    scaleX : -1,
+                    duration:500, 
+                    easing : Animate.easeInOut
+                });
+            }
+
+            fish2Idle();
+
+        }
+
+        app.stage.eventMode = 'static';
+        app.stage.hitArea = app.screen;
+        app.stage.on("pointerdown", fish2MoveToTap);
+
+
+
+        //Fish 3's idle animation
+        async function fish3sam() {
+            await Animate.to(fish3, {
+                x:0, y: -20, duration:1000, easing:Animate.easeInOut
+            });
+            await Animate.to(fish3, {
+                x:0, y:20, duration:1000, easing:Animate.easeInOut
+            });
+            fish3sam();
+        }
+
+        async function fish3Idle() {
+            fish3sam();
+            //Move to idle location
+            await Animate.to(fish3_container,{
+                x:350,y:100, duration:2000, easing:Animate.easeInOut
+            });
+            Animate.to(fish3_container, {
+                scaleX : 1,
+                duration:500,
+                easing:Animate.easeInOut
+            });
+        }
+
+        //Fish 3's Click Mechanic
+        window.addEventListener("load", fish3Idle);
+        async function fish3MoveToTap(e) {
+
+            console.log(e.global);
+
+            await Animate.to(fish3_container,{
+                x:e.global.x, 
+                y:e.global.y, 
+                duration:3000, 
+                easing : Animate.easeInOut
+            });
+            await pause(500);
+            if (e.global.x > 200) {
+                await Animate.to(fish3_container,{
+                    scaleX : -1,
+                    duration:500, 
+                    easing : Animate.easeInOut
+                });
+            }
+
+            fish3Idle();
+
+        }
+
+        app.stage.eventMode = 'static';
+        app.stage.hitArea = app.screen;
+        app.stage.on("pointerdown", fish3MoveToTap);
+
+
+
+        //Fish 4's idle animation
+        async function fish4doug() {
+            await Animate.to(fish2, {
+                x:0, y: -20, duration:1000, easing:Animate.easeInOut
+            });
+            await Animate.to(fish2, {
+                x:0, y:20, duration:1000, easing:Animate.easeInOut
+            });
+            fish4doug();
+        }
+
+        async function fish4doug() {
+            fish4doug();
+            //Move to idle location
+            await Animate.to(fish4_container,{
+                x:350,y:100, duration:2000, easing:Animate.easeInOut
+            });
+            Animate.to(fish4_container, {
+                scaleX : 1,
+                duration:500,
+                easing:Animate.easeInOut
+            });
+        }
+
+        //Fish 4's Click Mechanic
+        window.addEventListener("load", fish4Idle);
+        async function fish4MoveToTap(e) {
+
+            console.log(e.global);
+
+            await Animate.to(fish4_container,{
+                x:e.global.x, 
+                y:e.global.y, 
+                duration:3000, 
+                easing : Animate.easeInOut
+            });
+            await pause(500);
+            if (e.global.x > 200) {
+                await Animate.to(fish4_container,{
+                    scaleX : -1,
+                    duration:500, 
+                    easing : Animate.easeInOut
+                });
+            }
+
+            fish4Idle();
+
+        }
+
+        app.stage.eventMode = 'static';
+        app.stage.hitArea = app.screen;
+        app.stage.on("pointerdown", fish4MoveToTap);
+
+
+
+        //Fish 5's idle animation
+        async function fish5sam() {
+            await Animate.to(fish5, {
+                x:0, y: -20, duration:670, easing:Animate.easeInOut
+            });
+            await Animate.to(fish5, {
+                x:0, y:20, duration:1500, easing:Animate.easeInOut
+            });
+            fish5sam();
+        }
+
+        async function fish5Idle() {
+            fish5sam();
+            //Move to idle location
+            await Animate.to(fish3_container,{
+                x:350,y:100, duration:2000, easing:Animate.easeInOut
+            });
+            Animate.to(fish3_container, {
+                scaleX : 1,
+                duration:500,
+                easing:Animate.easeInOut
+            });
+        }
+
+        //Fish 5's Click Mechanic
+        window.addEventListener("load", fish5Idle);
+        async function fish3MoveToTap(e) {
+
+            console.log(e.global);
+
+            await Animate.to(fish3_container,{
+                x:e.global.x, 
+                y:e.global.y, 
+                duration:3000, 
+                easing : Animate.easeInOut
+            });
+            await pause(500);
+            if (e.global.x > 200) {
+                await Animate.to(fish3_container,{
+                    scaleX : -1,
+                    duration:500, 
+                    easing : Animate.easeInOut
+                });
+            }
+
+            fish3Idle();
+
+        }
+
+        app.stage.eventMode = 'static';
+        app.stage.hitArea = app.screen;
+        app.stage.on("pointerdown", fish3MoveToTap);
+        
+        
 
         //Pause
         function pause(ms) {
