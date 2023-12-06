@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+</head>
+
+<body>
+    <script>
+
+        //The App
+        const app = new PIXI.Application({
+            width: 640,
+            height: 480,
+            backgroundColor: 0x000000
+        });
+
+        //Add View to Document
+        document.body.appendChild(app.view);
+
+        // Modified Button class to create a draggable sprite
+        class DraggableTuna extends PIXI.Container {
+
+            // Constructor
+            constructor() {
+                super();
+
+                // Make interactive
+                this.interactive = true;
+
+                // Draggable event listeners
+                this.draggable = true;       // Whether it can drag
+                this.dragging = false;       // If dragging
+                this.offsetX;
+                this.offsetY;
+
+                // Tuna sprite
+                let tuna = PIXI.Sprite.from("img/tuna.png");
+                tuna.anchor.set(0.5);
+                tuna.scale.set(0.25);
+                tuna.tint = 0xA86F9F;
+                this.addChild(tuna);
+
+                // Event Listeners
+                this.on("pointerdown", (e) => {
+                    if (!this.draggable) return;
+                    this.dragging = true;
+                    this.offsetX = this.x - e.global.x;
+                    this.offsetY = this.y - e.global.y;
+                });
+
+                this.on("pointermove", (e) => {
+                    if (!this.draggable) return;
+                    if (this.dragging) {
+                        this.x = e.global.x + this.offsetX;
+                        this.y = e.global.y + this.offsetY;
+                    }
+                });
+
+                this.on("pointerup", (e) => {
+                    if (!this.draggable) return;
+                    this.dragging = false;
+                });
+
+                this.on("pointerupoutside", (e) => {
+                    if (!this.draggable) return;
+                    this.dragging = false;
+                });
+            }
+        }
+
+        // Make a draggable tuna
+        let draggableTuna = new DraggableTuna();
+        app.stage.addChild(draggableTuna);
+
+    </script>
+</body>
+
+</html>

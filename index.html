@@ -14,7 +14,7 @@
 
     <script>
 
-    //#1 – SPRITES:
+        //#1 – SPRITES:
         //The App
         const app = new PIXI.Application({
             width: 640,
@@ -53,6 +53,7 @@
 
 
         //Seaweed
+
         let seaweed = PIXI.Sprite.from("img/seaweed.png");
         seaweed.scale.set(.1);
         seaweed.anchor.set(.25, 1);
@@ -67,7 +68,7 @@
 
 
 
-        let seaweed2 = PIXI.Sprite.from("img/seaweed2.png");
+        let seaweed2 = PIXI.Sprite.from("img/seaweed.png");
         seaweed2.scale.set(.15);
         seaweed2.scale.x *= -1;
         seaweed2.anchor.set(.25, 1);
@@ -106,13 +107,13 @@
         fish1.tint = 0xFF7777;
 
         let fish1_container = new PIXI.Container();
-            fish1_container.addChild(fish1);
+        fish1_container.addChild(fish1);
 
         app.stage.addChild(fish1_container);
 
 
 
-        let fish2 = PIXI.Sprite.from("img/goldfish2.png");
+        let fish2 = PIXI.Sprite.from("img/goldfish.png");
         fish2.anchor.set(0.5);
         fish2.scale.set(.25);
         fish2.x = 0;
@@ -120,13 +121,13 @@
         fish2.tint = 0xF0FF0F;
 
         let fish2_container = new PIXI.Container();
-            fish2_container.addChild(fish2);
+        fish2_container.addChild(fish2);
 
         app.stage.addChild(fish2_container);
 
 
-        
-        let fish3 = PIXI.Sprite.from("img/goldfish3.png");
+
+        let fish3 = PIXI.Sprite.from("img/goldfish.png");
         fish3.anchor.set(.5);
         fish3.scale.set(.25);
         fish3.x = 0;
@@ -139,7 +140,7 @@
         app.stage.addChild(fish3_container);
 
 
-        let fish4 = PIXI.Sprite.from("img/goldfish4.png");
+        let fish4 = PIXI.Sprite.from("img/goldfish.png");
         fish4.anchor.set(.5);
         fish4.scale.set(.25);
         fish4.x = 0;
@@ -152,7 +153,7 @@
         app.stage.addChild(fish4_container);
 
 
-        let fish5 = PIXI.Sprite.from("img/goldfish5.png");
+        let fish5 = PIXI.Sprite.from("img/goldfish.png");
         fish5.anchor.set(.5);
         fish5.scale.set(.25);
         fish5.x = 0;
@@ -163,10 +164,24 @@
         fish5_container.addChild(fish5);
 
         app.stage.addChild(fish5_container);
-        
+
+
+        let tuna = PIXI.Sprite.from("img/tuna.png");
+        tuna.anchor.set(.5);
+        tuna.scale.set(.25);
+        tuna.x = 450;
+        tuna.y = 0;
+        tuna.tint = 0xA86F9F;
+
+        let tuna_container = new PIXI.Container();
+        tuna_container.addChild(tuna);
+
+        app.stage.addChild(tuna_container);
+
 
 
         //Glass
+
         let glasspane = PIXI.Sprite.from("img/glasspane.png");
         glasspane.tint = 0x99FF99
 
@@ -179,9 +194,9 @@
 
 
 
-    //#2 – SLIDER:
-        //Slider
+        //#2 – SLIDER:
 
+        //Slider
         class Slider extends PIXI.Container {
 
             constructor() {
@@ -264,21 +279,81 @@
 
 
 
-    //#3 – BUTTON:
+        //#3 – Draggable Tuna:
+
+        //Our Button Class
+        class DraggableTuna extends PIXI.Container {
+
+            // Constructor
+            constructor() {
+                super();
+
+                // Make interactive
+                this.interactive = true;
+
+                // Draggable event listeners
+                this.draggable = true;       // Whether it can drag
+                this.dragging = false;       // If dragging
+                this.offsetX;
+                this.offsetY;
+
+                // Tuna sprite
+                let tuna = PIXI.Sprite.from("img/tuna.png");
+                tuna.anchor.set(0.5);
+                tuna.scale.set(0.25);
+                tuna.tint = 0xA86F9F;
+                this.addChild(tuna);
+
+                // Event Listeners
+
+                this.on("pointerdown", (e) => {
+                    if (!this.draggable) return;
+                    this.dragging = true;
+                    this.offsetX = this.x - e.global.x;
+                    this.offsetY = this.y - e.global.y;
+                });
+
+                this.on("pointermove", (e) => {
+                    if (!this.draggable) return;
+                    if (this.dragging) {
+                        this.x = e.global.x + this.offsetX;
+                        this.y = e.global.y + this.offsetY;
+                    }
+                });
+
+                this.on("pointerup", (e) => {
+                    if (!this.draggable) return;
+                    this.dragging = false;
+                });
+
+                this.on("pointerupoutside", (e) => {
+                    if (!this.draggable) return;
+                    this.dragging = false;
+                });
+            }
+        }
+
+        // Make a draggable tuna
+        let draggableTuna = new DraggableTuna();
+        app.stage.addChild(draggableTuna);
+
+
+
+        //#4 – TUNA BUTTON:
 
         //Our Button Class
         class Button extends PIXI.Container {
 
             //Constructor
-            constructor(label,w,h) {
+            constructor(label, w, h) {
                 super();
 
                 //Defaults (make pretty later)
                 if (label === undefined)
                     this.label = "Button";
                 else
-                    this.label  = label;
-                
+                    this.label = label;
+
                 if (w === undefined)
                     this.w = 200;
                 else
@@ -294,30 +369,36 @@
 
                 //Button body
                 let buttonBody = new PIXI.Graphics();
-                    buttonBody.beginFill(0xCCCCCC);
-                    buttonBody.drawRect(0,0,
-                                        this.w,this.h);
-                    buttonBody.endFill();
+                buttonBody.beginFill(0x027F82);
+                buttonBody.drawRect(0, 0,
+                    this.w, this.h);
+                buttonBody.endFill();
                 this.buttonBody = buttonBody;
-                
+
                 this.addChild(buttonBody);
 
                 //Button label
                 let buttonLabel = new PIXI.Text(this.label);
-                    buttonLabel.anchor.set(.5);
-                    buttonLabel.x = buttonBody.width/2;
-                    buttonLabel.y = buttonBody.height/2;
+                buttonLabel.anchor.set(.5);
+                buttonLabel.x = buttonBody.width / 2;
+                buttonLabel.y = buttonBody.height / 2;
+
                 this.buttonLabel = buttonLabel;
-                
+
                 this.addChild(buttonLabel);
 
+                //Button Placement
+                buttonBody.x = 425;
+                buttonBody.y = 15;
+                buttonLabel.x = 522.5;
+                buttonLabel.y = 37.5;
+
                 //Event Listeners
-                //Click listener
+
                 this.on("pointertap", (e) => {
                     console.log(e);
-                    let color = Math.random() * 0xFFFFFF;
-                    //buttonBody.tint = color;
                 });
+
                 //Hover events
                 this.on("pointerover", (e) => {
                     buttonBody.alpha = 0.7;
@@ -326,35 +407,14 @@
                     buttonBody.alpha = 1;
                 });
 
-                //Draggable event listeners
-                this.draggable = false;     //Whether it can drag
-                this.dragging = false;      //If dragging
-                this.offsetX;
-                this.offsetY;
+                this.on("pointertap", (e) => {
+                    this.value = !this.value;
+                    console.log(this.value);
 
-                this.on("pointerdown", (e) => { 
-                    if (!this.draggable) return;
-                    this.dragging = true;
-                    this.offsetX = this.x - e.global.x;
-                    this.offsetY = this.y - e.global.y;
-                });
-
-                this.on("pointermove", (e) => { 
-                    if (!this.draggable) return;
-                    console.log(e.global.x, e.global.y);
-                    if (this.dragging) {
-                        this.x = e.global.x + this.offsetX;
-                        this.y = e.global.y + this.offsetY;
-                    }
-                });
-
-                this.on("pointerup", (e) => {  
-                    if (!this.draggable) return;
-                    this.dragging = false;
-                });
-                this.on("pointerupoutside", (e) => {  
-                    if (!this.draggable) return;
-                    this.dragging = false;
+                    if (this.value == true)
+                        this.buttonBody.tint = 0xFFFFFF;
+                    else
+                        this.buttonBody.tint = 0x027F82;
                 });
 
             }
@@ -362,14 +422,14 @@
         }
 
         //Make a Button
-        let myButton = new Button("Name", 200, 50);
+        let myButton = new Button("Tuna Expander", 200, 50);
         app.stage.addChild(myButton);
-        myButton.draggable = true;
 
 
 
 
-    //#4 – ANIMATIONS:
+
+        //#5 – ANIMATIONS:
 
         //Animation loop!
         function loop() {
@@ -379,37 +439,24 @@
             //Shark wobbling
             shark.scale.x = 0.2 + Math.sin(counter / 4) / 300;
 
-            /*
-            //Fish 2 bobbing
-            fish2.y = 150 + (Math.sin(counter / 30)) * 30;
-            //Fish 2 wobbling
+            // Fish 1 wobbling
+            fish1.scale.x = -0.25 + Math.sin(counter / 2) / 400;
+
+            // Fish 2 wobbling
             fish2.scale.x = -0.25 + Math.sin(counter / 2) / 400;
-            //Fish 2 container moving back and forth
-            fish2_container.x = 200 + Math.sin(counter / 100) * 50;
 
-
-            //Fish 3 bobbing
-            fish3.y = 100 + (Math.sin(counter / 60)) * 60;
             //Fish 3 wobbling
             fish3.scale.x = -0.25 + Math.sin(counter / 2) / 400;
-            //Fish 3 container moving back and forth
-            fish3_container.x = 320 + Math.sin(counter / 100) * 100;
 
-
-            //Fish 4 bobbing
-            fish4.y = 150 + (Math.sin(counter / 70)) * 30;
             //Fish 4 wobbling
-            fish4.scale.x = 0.25 + Math.sin(counter / 2) / 400;
-            //Fish 4 container moving back and forth
-            fish4_container.x = 400 + Math.sin(counter / 100) * 50;
+            fish4.scale.x = -0.25 + Math.sin(counter / 2) / 400;
 
-
-            //Fish 5 bobbing
-            fish5.y = 150 + (Math.sin(counter / 30)) * 30;
             //Fish 5 wobbling
             fish5.scale.x = -0.25 + Math.sin(counter / 5) / 300;
-            //Fish 5 container moving back and forth
-            fish5_container.x = 300 + Math.sin(counter / 100) * 50; */
+
+            // Fish 6 Swimming animation
+            tuna.scale.x = -0.25 + Math.sin(counter / 2) / 400;
+            tuna.y = 380 + (Math.sin(counter / 30)) * 30;
 
 
             //Seaweed Waving
@@ -513,10 +560,10 @@
         //
         Animate.linear = (x) => x;
 
-            //Quadratic
-            Animate.easeIn = (x) => x * x;
-            Animate.easeOut = (x) => 1 - (1 - x) * (1 - x);
-            Animate.easeInOut = (x) => {
+        //Quadratic
+        Animate.easeIn = (x) => x * x;
+        Animate.easeOut = (x) => 1 - (1 - x) * (1 - x);
+        Animate.easeInOut = (x) => {
             if (x < 0.5) return 2 * x * x;
             return 1 - Math.pow(-2 * x + 2, 2) / 2;
         }
@@ -526,10 +573,10 @@
         //Fish 1's idle animation
         async function fish1bob() {
             await Animate.to(fish1, {
-                x:0, y: -20, duration:1000, easing:Animate.easeInOut
+                x: 0, y: -20, duration: 1000, easing: Animate.easeInOut
             });
             await Animate.to(fish1, {
-                x:0, y:20, duration:1000, easing:Animate.easeInOut
+                x: 0, y: 20, duration: 1000, easing: Animate.easeInOut
             });
             fish1bob();
         }
@@ -537,13 +584,13 @@
         async function fish1Idle() {
             fish1bob();
             //Move to idle location
-            await Animate.to(fish1_container,{
-                x:350,y:100, duration:2000, easing:Animate.easeInOut
+            await Animate.to(fish1_container, {
+                x: 350, y: 100, duration: 2000, easing: Animate.easeInOut
             });
             Animate.to(fish1_container, {
-                scaleX : 1,
-                duration:500,
-                easing:Animate.easeInOut
+                scaleX: 1,
+                duration: 500,
+                easing: Animate.easeInOut
             });
         }
 
@@ -555,18 +602,18 @@
 
             console.log(e.global);
 
-            await Animate.to(fish1_container,{
-                x:e.global.x, 
-                y:e.global.y, 
-                duration:3000, 
-                easing : Animate.easeInOut
+            await Animate.to(fish1_container, {
+                x: e.global.x,
+                y: e.global.y,
+                duration: 3000,
+                easing: Animate.easeInOut
             });
             await pause(500);
             if (e.global.x > 200) {
-                await Animate.to(fish1_container,{
-                    scaleX : -1,
-                    duration:500, 
-                    easing : Animate.easeInOut
+                await Animate.to(fish1_container, {
+                    scaleX: -1,
+                    duration: 500,
+                    easing: Animate.easeInOut
                 });
             }
             fish1Idle();
@@ -584,10 +631,10 @@
         //Fish 2's idle animation
         async function fish2joe() {
             await Animate.to(fish2, {
-                x:0, y: -20, duration:1500, easing:Animate.easeInOut
+                x: 0, y: -20, duration: 1500, easing: Animate.easeInOut
             });
             await Animate.to(fish2, {
-                x:0, y:20, duration:1000, easing:Animate.easeInOut
+                x: 0, y: 20, duration: 1000, easing: Animate.easeInOut
             });
             fish2joe();
         }
@@ -595,13 +642,13 @@
         async function fish2Idle() {
             fish2joe();
             //Move to idle location
-            await Animate.to(fish2_container,{
-                x:400,y:300, duration:2000, easing:Animate.easeInOut
+            await Animate.to(fish2_container, {
+                x: 400, y: 300, duration: 2000, easing: Animate.easeInOut
             });
             Animate.to(fish2_container, {
-                scaleX : 1,
-                duration:500,
-                easing:Animate.easeInOut
+                scaleX: 1,
+                duration: 500,
+                easing: Animate.easeInOut
             });
         }
 
@@ -611,18 +658,18 @@
 
             console.log(e.global);
 
-            await Animate.to(fish2_container,{
-                x:e.global.x, 
-                y:e.global.y, 
-                duration:2500 + (Math.random()*1000), 
-                easing : Animate.easeInOut
+            await Animate.to(fish2_container, {
+                x: e.global.x,
+                y: e.global.y,
+                duration: 2500 + (Math.random() * 1000),
+                easing: Animate.easeInOut
             });
             await pause(500);
             if (e.global.x > 200) {
-                await Animate.to(fish2_container,{
-                    scaleX : -1,
-                    duration:500, 
-                    easing : Animate.easeInOut
+                await Animate.to(fish2_container, {
+                    scaleX: -1,
+                    duration: 500,
+                    easing: Animate.easeInOut
                 });
             }
 
@@ -637,10 +684,10 @@
         //Fish 3's idle animation
         async function fish3sam() {
             await Animate.to(fish3, {
-                x:0, y: -20, duration:1000, easing:Animate.easeInOut
+                x: 0, y: -20, duration: 1000, easing: Animate.easeInOut
             });
             await Animate.to(fish3, {
-                x:0, y:20, duration:1000, easing:Animate.easeInOut
+                x: 0, y: 20, duration: 1000, easing: Animate.easeInOut
             });
             fish3sam();
         }
@@ -648,13 +695,13 @@
         async function fish3Idle() {
             fish3sam();
             //Move to idle location
-            await Animate.to(fish3_container,{
-                x:200,y:400, duration:2000, easing:Animate.easeInOut
+            await Animate.to(fish3_container, {
+                x: 200, y: 400, duration: 2000, easing: Animate.easeInOut
             });
             Animate.to(fish3_container, {
-                scaleX : 1,
-                duration:500,
-                easing:Animate.easeInOut
+                scaleX: 1,
+                duration: 500,
+                easing: Animate.easeInOut
             });
         }
 
@@ -664,18 +711,18 @@
 
             console.log(e.global);
 
-            await Animate.to(fish3_container,{
-                x:e.global.x, 
-                y:e.global.y, 
-                duration:3000, 
-                easing : Animate.easeInOut
+            await Animate.to(fish3_container, {
+                x: e.global.x,
+                y: e.global.y,
+                duration: 3000,
+                easing: Animate.easeInOut
             });
             await pause(500);
             if (e.global.x > 200) {
-                await Animate.to(fish3_container,{
-                    scaleX : -1,
-                    duration:500, 
-                    easing : Animate.easeInOut
+                await Animate.to(fish3_container, {
+                    scaleX: -1,
+                    duration: 500,
+                    easing: Animate.easeInOut
                 });
             }
 
@@ -690,10 +737,10 @@
         //Fish 4's idle animation
         async function fish4doug() {
             await Animate.to(fish4, {
-                x:0, y: -20, duration:750 + Math.random(250), easing:Animate.easeInOut
+                x: 0, y: -20, duration: 750 + Math.random(250), easing: Animate.easeInOut
             });
             await Animate.to(fish4, {
-                x:0, y:20, duration:1000, easing:Animate.easeInOut
+                x: 0, y: 20, duration: 1000, easing: Animate.easeInOut
             });
             fish4doug();
         }
@@ -701,13 +748,13 @@
         async function fish4Idle() {
             fish4doug();
             //Move to idle location
-            await Animate.to(fish4_container,{
-                x:200,y:200, duration:2000, easing:Animate.easeInOut
+            await Animate.to(fish4_container, {
+                x: 200, y: 200, duration: 2000, easing: Animate.easeInOut
             });
             Animate.to(fish4_container, {
-                scaleX : 1,
-                duration:500,
-                easing:Animate.easeInOut
+                scaleX: 1,
+                duration: 500,
+                easing: Animate.easeInOut
             });
         }
 
@@ -717,18 +764,18 @@
 
             console.log(e.global);
 
-            await Animate.to(fish4_container,{
-                x:e.global.x, 
-                y:e.global.y, 
-                duration:3000, 
-                easing : Animate.easeInOut
+            await Animate.to(fish4_container, {
+                x: e.global.x,
+                y: e.global.y,
+                duration: 3000,
+                easing: Animate.easeInOut
             });
             await pause(500);
             if (e.global.x > 200) {
-                await Animate.to(fish4_container,{
-                    scaleX : -1,
-                    duration:500, 
-                    easing : Animate.easeInOut
+                await Animate.to(fish4_container, {
+                    scaleX: -1,
+                    duration: 500,
+                    easing: Animate.easeInOut
                 });
             }
 
@@ -745,10 +792,10 @@
         //Fish 5's idle animation
         async function fish5sam() {
             await Animate.to(fish5, {
-                x:0, y: -20, duration:670, easing:Animate.easeInOut
+                x: 0, y: -20, duration: 670, easing: Animate.easeInOut
             });
             await Animate.to(fish5, {
-                x:0, y:20, duration:1500, easing:Animate.easeInOut
+                x: 0, y: 20, duration: 1500, easing: Animate.easeInOut
             });
             fish5sam();
         }
@@ -756,13 +803,13 @@
         async function fish5Idle() {
             fish5sam();
             //Move to idle location
-            await Animate.to(fish5_container,{
-                x:450,y:200, duration:2000, easing:Animate.easeInOut
+            await Animate.to(fish5_container, {
+                x: 450, y: 200, duration: 2000, easing: Animate.easeInOut
             });
             Animate.to(fish5_container, {
-                scaleX : 1,
-                duration:500,
-                easing:Animate.easeInOut
+                scaleX: 1,
+                duration: 500,
+                easing: Animate.easeInOut
             });
         }
 
@@ -772,18 +819,18 @@
 
             console.log(e.global);
 
-            await Animate.to(fish5_container,{
-                x:e.global.x, 
-                y:e.global.y, 
-                duration:3000, 
-                easing : Animate.easeInOut
+            await Animate.to(fish5_container, {
+                x: e.global.x,
+                y: e.global.y,
+                duration: 3000,
+                easing: Animate.easeInOut
             });
             await pause(500);
             if (e.global.x > 200) {
-                await Animate.to(fish5_container,{
-                    scaleX : -1,
-                    duration:500, 
-                    easing : Animate.easeInOut
+                await Animate.to(fish5_container, {
+                    scaleX: -1,
+                    duration: 500,
+                    easing: Animate.easeInOut
                 });
             }
 
@@ -794,9 +841,10 @@
         app.stage.eventMode = 'static';
         app.stage.hitArea = app.screen;
         app.stage.on("pointerdown", fish5MoveToTap);
-        
 
-        //Test
+
+        // Shark
+
         let bob = PIXI.Sprite.from('./img/shark.png')
         bob.scale.set(.2);
         bob.anchor.set(0.5);
