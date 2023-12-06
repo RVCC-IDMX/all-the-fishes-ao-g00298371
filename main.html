@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://pixijs.download/release/pixi.js"></script>
 </head>
 
@@ -166,24 +165,93 @@
         app.stage.addChild(fish5_container);
 
 
-        let tuna = PIXI.Sprite.from("img/tuna.png");
-        tuna.anchor.set(.5);
-        tuna.scale.set(.25);
-        tuna.x = 450;
-        tuna.y = 0;
-        tuna.tint = 0xA86F9F;
 
-        let tuna_container = new PIXI.Container();
-        tuna_container.addChild(tuna);
 
-        app.stage.addChild(tuna_container);
+        // Draggable Tuna:
 
+        //Our Button Class
+        class DraggableTuna extends PIXI.Container {
+
+        // Constructor
+        constructor() {
+            super();
+
+            // Make interactive
+            this.interactive = true;
+
+            // Draggable event listeners
+            this.draggable = true;       // Whether it can drag
+            this.dragging = false;       // If dragging
+            this.offsetX;
+            this.offsetY;
+
+            // Tuna sprite
+            // let tuna = PIXI.Sprite.from("img/tuna.png");
+            // tuna.anchor.set(0.5);
+            // tuna.scale.set(0.25);
+            // tuna.tint = 0xA86F9F;
+            // this.addChild(tuna);
+            let tuna = PIXI.Sprite.from("img/tuna.png");
+            tuna.anchor.set(.5);
+            tuna.scale.set(.25);
+            tuna.x = 450;
+            tuna.y = 0;
+
+            //let tuna_container = new PIXI.Container();
+            //tuna_container.addChild(tuna);
+            this.addChild(tuna);
+
+            // Event Listeners
+
+            this.on("pointerdown", (e) => {
+                if (!this.draggable) return;
+                this.dragging = true;
+                this.offsetX = this.x - e.global.x;
+                this.offsetY = this.y - e.global.y;
+                Animate.to(tuna,{
+                    rotation:1,
+                    duration:500,
+                    easing:Animate.easeInOut
+                });
+                //tuna.rotation = 1.00;
+            });
+
+            this.on("pointermove", (e) => {
+                if (!this.draggable) return;
+                if (this.dragging) {
+                    this.x = e.global.x + this.offsetX;
+                    this.y = e.global.y + this.offsetY;
+                }
+            });
+
+            this.on("pointerup", (e) => {
+                if (!this.draggable) return;
+                this.dragging = false;
+                //tuna.rotation = 0;
+                Animate.to(tuna,{
+                    rotation:0,
+                    duration:500,
+                    easing:Animate.easeInOut
+                });
+            });
+
+            this.on("pointerupoutside", (e) => {
+                if (!this.draggable) return;
+                this.dragging = false;
+            });
+        }
+        }
+
+        // Make a draggable tuna
+        let draggableTuna = new DraggableTuna();
+        app.stage.addChild(draggableTuna);
 
 
         //Glass
 
         let glasspane = PIXI.Sprite.from("img/glasspane.png");
-        glasspane.tint = 0x99FF99
+            glasspane.tint = 0x99FF99;
+            glasspane.eventMode = "passive";
 
         let glasspane_container = new PIXI.Container();
         glasspane_container.addChild(glasspane);
@@ -191,6 +259,8 @@
         app.stage.addChild(glasspane_container);
 
         let counter = 0;
+
+
 
 
 
@@ -279,67 +349,8 @@
 
 
 
-        //#3 – Draggable Tuna:
 
-        //Our Button Class
-        class DraggableTuna extends PIXI.Container {
-
-            // Constructor
-            constructor() {
-                super();
-
-                // Make interactive
-                this.interactive = true;
-
-                // Draggable event listeners
-                this.draggable = true;       // Whether it can drag
-                this.dragging = false;       // If dragging
-                this.offsetX;
-                this.offsetY;
-
-                // Tuna sprite
-                let tuna = PIXI.Sprite.from("img/tuna.png");
-                tuna.anchor.set(0.5);
-                tuna.scale.set(0.25);
-                tuna.tint = 0xA86F9F;
-                this.addChild(tuna);
-
-                // Event Listeners
-
-                this.on("pointerdown", (e) => {
-                    if (!this.draggable) return;
-                    this.dragging = true;
-                    this.offsetX = this.x - e.global.x;
-                    this.offsetY = this.y - e.global.y;
-                });
-
-                this.on("pointermove", (e) => {
-                    if (!this.draggable) return;
-                    if (this.dragging) {
-                        this.x = e.global.x + this.offsetX;
-                        this.y = e.global.y + this.offsetY;
-                    }
-                });
-
-                this.on("pointerup", (e) => {
-                    if (!this.draggable) return;
-                    this.dragging = false;
-                });
-
-                this.on("pointerupoutside", (e) => {
-                    if (!this.draggable) return;
-                    this.dragging = false;
-                });
-            }
-        }
-
-        // Make a draggable tuna
-        let draggableTuna = new DraggableTuna();
-        app.stage.addChild(draggableTuna);
-
-
-
-        //#4 – TUNA BUTTON:
+        //#3 – TUNA EXPANDER BUTTON:
 
         //Our Button Class
         class Button extends PIXI.Container {
@@ -370,6 +381,7 @@
                 //Button body
                 let buttonBody = new PIXI.Graphics();
                 buttonBody.beginFill(0x027F82);
+                buttonBody.lineStyle(2, 0x002E39, 1);
                 buttonBody.drawRect(0, 0,
                     this.w, this.h);
                 buttonBody.endFill();
@@ -393,11 +405,7 @@
                 buttonLabel.x = 522.5;
                 buttonLabel.y = 37.5;
 
-                //Event Listeners
-
-                this.on("pointertap", (e) => {
-                    console.log(e);
-                });
+                //Event Listeners             
 
                 //Hover events
                 this.on("pointerover", (e) => {
@@ -414,7 +422,7 @@
                     if (this.value == true)
                         this.buttonBody.tint = 0xFFFFFF;
                     else
-                        this.buttonBody.tint = 0x027F82;
+                        this.buttonBody.tint = 0xCCCCCC;
                 });
 
             }
@@ -423,13 +431,28 @@
 
         //Make a Button
         let myButton = new Button("Tuna Expander", 200, 50);
+
+        myButton.on("pointerdown", (e) => {
+                    
+            draggableTuna.children[0].scale.set(.25,.5);
+            draggableTuna.children[0].tint = 0xFF0000;
+            
+        });
+
+        myButton.on("pointerup", (e) => {
+            
+            draggableTuna.children[0].scale.set(.25);
+            draggableTuna.children[0].tint = 0xFFFFFF;
+            
+        });   
+
         app.stage.addChild(myButton);
 
 
 
 
 
-        //#5 – ANIMATIONS:
+        //#4 – ANIMATOR and ANIMATIONS:
 
         //Animation loop!
         function loop() {
@@ -455,8 +478,8 @@
             fish5.scale.x = -0.25 + Math.sin(counter / 5) / 300;
 
             // Fish 6 Swimming animation
-            tuna.scale.x = -0.25 + Math.sin(counter / 2) / 400;
-            tuna.y = 380 + (Math.sin(counter / 30)) * 30;
+            draggableTuna.scale.x = -0.25 + Math.sin(counter / 2) / 400;
+            draggableTuna.y = 380 + (Math.sin(counter / 30)) * 30;
 
 
             //Seaweed Waving
@@ -490,7 +513,8 @@
                     x: obj.x,
                     y: obj.y,
                     scaleX: obj.scale.x,
-                    scaleY: obj.scale.y
+                    scaleY: obj.scale.y,
+                    rotation: obj.rotation
                 };
 
                 //Set defaults
@@ -517,6 +541,8 @@
                             obj.scale.x = end.scaleX
                         if (end.scaleY != undefined)
                             obj.scaleY = end.scaleY;
+                        if (end.rotation != undefined)
+                            obj.rotation = end.rotation;
                         console.log("Done");
                         resolve();
                         return;
@@ -538,6 +564,9 @@
                         obj.scale.x = lerp(start.scaleX, end.scaleX, ease);
                     if (end.scaleY != undefined)
                         obj.scale.y = lerp(start.scaleY, end.scaleY, ease);
+                    //Lerp rotation
+                    if (end.rotation != undefined)
+                        obj.rotation = lerp(start.rotation, end.rotation, ease);
 
                     //Loop
                     obj.animationID = requestAnimationFrame(loop);
